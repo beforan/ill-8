@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ill_8.Cpu
+﻿namespace ill8.Cpu
 {
     public class Class1
     {
