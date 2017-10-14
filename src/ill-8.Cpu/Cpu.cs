@@ -1,4 +1,6 @@
-﻿namespace ill8.Cpu
+﻿using System.Collections;
+
+namespace ill8.Cpu
 {
     public class Cpu
     {
@@ -25,8 +27,8 @@
         /// <summary>
         /// 64 x 32 pixel display, with on or off state only
         /// </summary>
-        public bool[] Vram { get; } = new bool[64 * 32]; //TODO make size configurable? maybe move to own class?
-        //own class would allow palettes? might be easier for renderers?
+        public BitArray Vram { get; } = new BitArray(64 * 32); //TODO make size configurable? maybe move to own class?
+        //own class could allow palettes? might be easier for renderers?
 
         /// <summary>
         /// 60Hz Delay Timer register
@@ -64,9 +66,9 @@
         public void Tick()
         {
             var opcode = M.ReadWord(PC);
+            PC += 2; //jump forward the op length here, so it doesn't matter if an op then modifies PC
 
             Instructions.Exec(opcode);
-            PC += 2; //all instructions are 2 long
 
             //Timers
             if (Delay > 0) Delay--;
