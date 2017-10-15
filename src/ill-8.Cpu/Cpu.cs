@@ -2,7 +2,7 @@
 
 namespace ill8.Cpu
 {
-    public class Cpu
+    public class Cpu : ICpu
     {
         /// <summary>
         /// General purpose registers
