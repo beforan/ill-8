@@ -7,7 +7,7 @@ namespace ill8.Cpu
         /// <summary>
         /// General purpose registers
         /// </summary>
-        public byte[] V { get; } = new byte[16];
+        public byte[] V { get; set; } = new byte[16];
 
         /// <summary>
         /// 12-bit index register
@@ -27,7 +27,7 @@ namespace ill8.Cpu
         /// <summary>
         /// 64 x 32 pixel display, with on or off state only
         /// </summary>
-        public BitArray Vram { get; } = new BitArray(64 * 32); //TODO make size configurable? maybe move to own class?
+        public BitArray Vram { get; set; } = new BitArray(64 * 32); //TODO make size configurable? maybe move to own class?
         //own class could allow palettes? might be easier for renderers?
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace ill8.Cpu
         /// <summary>
         /// Stack for jump instructions
         /// </summary>
-        public ushort[] Stack { get; } = new ushort[16];
+        public ushort[] Stack { get; set; } = new ushort[16];
 
         /// <summary>
         /// Stack pointer
@@ -53,7 +53,7 @@ namespace ill8.Cpu
         /// <summary>
         /// Key state
         /// </summary>
-        public bool[] Keys { get; } = new bool[16];
+        public bool[] Keys { get; set; } = new bool[16];
 
         public Instructions Instructions { get; private set; }
 
