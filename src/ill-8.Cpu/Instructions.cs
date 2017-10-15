@@ -10,13 +10,13 @@ namespace ill8.Cpu
         private Random _rand = new Random();
         private List<Action<ushort>> _instructions;
 
-        public Cpu Cpu { get; private set; }
+        public ICpu Cpu { get; private set; }
 
-        public Instructions(Cpu cpu)
+        public Instructions(ICpu cpu)
         {
             Cpu = cpu;
 
-            _instructions = new List<Action<ushort>>
+            _instructions = new List<Action<ushort>>(new Action<ushort>[0xf066])
             {
                 [0x0000] = _0NNN,
                 [0x00E0] = _00E0,
