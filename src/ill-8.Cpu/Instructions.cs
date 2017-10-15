@@ -63,7 +63,7 @@ namespace ill8.Cpu
         /// <summary>
         /// Load each register from V0 to VX with data from consecutive memory addresses, incrementing I on the way
         /// </summary>
-        public void FX65(ushort opcode)
+        public virtual void FX65(ushort opcode)
         {
             var x = opcode & 0x0f00 >> 8;
             for (var i = 0; i <= x; i++)
@@ -75,7 +75,7 @@ namespace ill8.Cpu
         /// <summary>
         /// Dump the contents of each register from V0 to VX in consecutive memory addresses, incrementing I on the way
         /// </summary>
-        public void FX55(ushort opcode)
+        public virtual void FX55(ushort opcode)
         {
             var x = opcode & 0x0f00 >> 8;
             for(var i = 0; i <= x; i++)
@@ -87,7 +87,7 @@ namespace ill8.Cpu
         /// <summary>
         /// Stores the value of VX as BCD in the three consecutive addresses starting at I
         /// </summary>
-        public void FX33(ushort opcode)
+        public virtual void FX33(ushort opcode)
         {
             var value = Cpu.V[opcode & 0x0f00 >> 8];
             var chars = value.ToString().PadLeft(3, '0').Split();
@@ -100,32 +100,32 @@ namespace ill8.Cpu
         /// <summary>
         /// Set I to point to the font sprite address for the value in VX
         /// </summary>
-        public void FX29(ushort opcode)
+        public virtual void FX29(ushort opcode)
             => Cpu.I = (ushort)(Cpu.V[opcode & 0x0f00 >> 8] * 5);
 
         /// <summary>
         /// Add VX to I
         /// </summary>
         /// <param name="opcode"></param>
-        public void FX1E(ushort opcode)
+        public virtual void FX1E(ushort opcode)
             => Cpu.I += Cpu.V[opcode & 0x0f00 >> 8];
 
         /// <summary>
         /// Set Sound to VX
         /// </summary>
-        public void FX18(ushort opcode)
+        public virtual void FX18(ushort opcode)
             => Cpu.Sound = Cpu.V[opcode & 0x0f00 >> 8];
 
         /// <summary>
         /// Set Delay to VX
         /// </summary>
-        public void FX15(ushort opcode)
+        public virtual void FX15(ushort opcode)
             => Cpu.Delay = Cpu.V[opcode & 0x0f00 >> 8];
 
         /// <summary>
         /// Block until a key is pressed... then store it in VX
         /// </summary>
-        public void FX0A(ushort opcode)
+        public virtual void FX0A(ushort opcode)
         {
             //TODO Need a cpu flag and some bullshit event listening for this...
             //wait until we have input figured out
@@ -135,13 +135,13 @@ namespace ill8.Cpu
         /// <summary>
         /// Set VX to Delay
         /// </summary>
-        public void FX07(ushort opcode)
+        public virtual void FX07(ushort opcode)
             => Cpu.V[opcode & 0x0f00 >> 8] = Cpu.Delay;
 
         /// <summary>
         /// Sets VX and VY to VY &lt;&lt; 1, stores the VY MSb in VF before the shift
         /// </summary>
-        public void _8XYE(ushort opcode)
+        public virtual void _8XYE(ushort opcode)
         {
             var x = opcode & 0x0f00 >> 8;
             var y = opcode & 0x00f0 >> 4;
@@ -152,7 +152,7 @@ namespace ill8.Cpu
         /// <summary>
         /// Sets VX to VY - VX, sets VF for no borrow
         /// </summary>
-        public void _8XY7(ushort opcode)
+        public virtual void _8XY7(ushort opcode)
         {
             Cpu.V[0xf] = 1;
             var x = opcode & 0x0f00 >> 8;
@@ -164,7 +164,7 @@ namespace ill8.Cpu
         /// <summary>
         /// Sets VX and VY to VY >> 1, stores the VY LSb in VF before the shift
         /// </summary>
-        public void _8XY6(ushort opcode)
+        public virtual void _8XY6(ushort opcode)
         {
             var x = opcode & 0x0f00 >> 8;
             var y = opcode & 0x00f0 >> 4;
@@ -175,7 +175,7 @@ namespace ill8.Cpu
         /// <summary>
         /// Subtracts VY from VX, sets VF for no borrow
         /// </summary>
-        public void _8XY5(ushort opcode)
+        public virtual void _8XY5(ushort opcode)
         {
             Cpu.V[0xf] = 1;
             var x = opcode & 0x0f00 >> 8;
@@ -187,7 +187,7 @@ namespace ill8.Cpu
         /// <summary>
         /// Add VY to VX, sets VF for carry
         /// </summary>
-        public void _8XY4(ushort opcode)
+        public virtual void _8XY4(ushort opcode)
         {
             Cpu.V[0xf] = 0;
             var x = opcode & 0x0f00 >> 8;
@@ -199,7 +199,7 @@ namespace ill8.Cpu
         /// <summary>
         /// Set VX to VX^VY
         /// </summary>
-        public void _8XY3(ushort opcode)
+        public virtual void _8XY3(ushort opcode)
         {
             var x = opcode & 0x0f00 >> 8;
             Cpu.V[x] = (byte)(Cpu.V[x] ^ Cpu.V[opcode & 0x00f0 >> 4]);
@@ -208,7 +208,7 @@ namespace ill8.Cpu
         /// <summary>
         /// Set VX to VX&VY
         /// </summary>
-        public void _8XY2(ushort opcode)
+        public virtual void _8XY2(ushort opcode)
         {
             var x = opcode & 0x0f00 >> 8;
             Cpu.V[x] = (byte)(Cpu.V[x] & Cpu.V[opcode & 0x00f0 >> 4]);
@@ -217,7 +217,7 @@ namespace ill8.Cpu
         /// <summary>
         /// Set VX to VX|VY
         /// </summary>
-        public void _8XY1(ushort opcode)
+        public virtual void _8XY1(ushort opcode)
         {
             var x = opcode & 0x0f00 >> 8;
             Cpu.V[x] = (byte)(Cpu.V[x] | Cpu.V[opcode & 0x00f0 >> 4]);
@@ -226,13 +226,13 @@ namespace ill8.Cpu
         /// <summary>
         /// Set VX to VY
         /// </summary>
-        public void _8XY0(ushort opcode)
+        public virtual void _8XY0(ushort opcode)
             => Cpu.V[opcode & 0x0f00 >> 8] = Cpu.V[opcode & 0x00f0 >> 4];
 
         /// <summary>
         /// Skip the next instruction if the key stored at VX is not pressed
         /// </summary>
-        public void EXA1(ushort opcode)
+        public virtual void EXA1(ushort opcode)
         {
             if (!Cpu.Keys[Cpu.V[opcode & 0x0f00 >> 8]]) Cpu.PC += 2;
         }
@@ -240,7 +240,7 @@ namespace ill8.Cpu
         /// <summary>
         /// Skip the next instruction if the key stored at VX is pressed
         /// </summary>
-        public void EX9E(ushort opcode)
+        public virtual void EX9E(ushort opcode)
         {
             if (Cpu.Keys[Cpu.V[opcode & 0x0f00 >> 8]]) Cpu.PC += 2;
         }
@@ -252,7 +252,7 @@ namespace ill8.Cpu
         /// I is not updated.
         /// VF is set to 1 if any pixels are unset by this operation.
         /// </summary>
-        public void DXYN(ushort opcode)
+        public virtual void DXYN(ushort opcode)
         {
             var x = Cpu.V[(opcode & 0x0f00) >> 8];
             var y = Cpu.V[(opcode & 0x00f0) >> 4];
@@ -283,7 +283,7 @@ namespace ill8.Cpu
         /// <summary>
         /// Set VX to rand() & NN, where rand() is a random byte value
         /// </summary>
-        public void CXNN(ushort opcode)
+        public virtual void CXNN(ushort opcode)
         {
             var x = (opcode & 0x0f00) >> 8;
             var nn = opcode & 0x00ff;
@@ -293,19 +293,19 @@ namespace ill8.Cpu
         /// <summary>
         /// Jump to an address V0 + NNN
         /// </summary>
-        public void BNNN(ushort opcode)
+        public virtual void BNNN(ushort opcode)
             => Cpu.PC = (ushort)((opcode & 0x0fff) + Cpu.V[0]);
 
         /// <summary>
         /// Set I = NNN
         /// </summary>
-        public void ANNN(ushort opcode)
+        public virtual void ANNN(ushort opcode)
             => Cpu.I = (ushort)(opcode & 0x0fff);
 
         /// <summary>
         /// Skip the next op (Increment PC by 2) if VX != VY
         /// </summary>
-        public void _9XY0(ushort opcode)
+        public virtual void _9XY0(ushort opcode)
         {
             var x = (opcode & 0x0f00) >> 8;
             var y = (opcode & 0x00f0) >> 4;
@@ -315,7 +315,7 @@ namespace ill8.Cpu
         /// <summary>
         /// Add NN to VX, no carry
         /// </summary>
-        public void _7XNN(ushort opcode)
+        public virtual void _7XNN(ushort opcode)
         {
             var x = (opcode & 0x0f00) >> 8;
             var nn = opcode & 0x00ff;
@@ -325,7 +325,7 @@ namespace ill8.Cpu
         /// <summary>
         /// Set VX to NN
         /// </summary>
-        public void _6XNN(ushort opcode)
+        public virtual void _6XNN(ushort opcode)
         {
             var x = (opcode & 0x0f00) >> 8;
             var nn = opcode & 0x00ff;
@@ -335,7 +335,7 @@ namespace ill8.Cpu
         /// <summary>
         /// Skip the next op (Increment PC by 2) if VX == VY
         /// </summary>
-        public void _5XY0(ushort opcode)
+        public virtual void _5XY0(ushort opcode)
         {
             var x = (opcode & 0x0f00) >> 8;
             var y = (opcode & 0x00f0) >> 4;
@@ -345,7 +345,7 @@ namespace ill8.Cpu
         /// <summary>
         /// Skip the next op (Increment PC by 2) if VX != NN
         /// </summary>
-        public void _4XNN(ushort opcode)
+        public virtual void _4XNN(ushort opcode)
         {
             var x = (opcode & 0x0f00) >> 8;
             var nn = opcode & 0x00ff;
@@ -355,7 +355,7 @@ namespace ill8.Cpu
         /// <summary>
         /// Skip the next op (Increment PC by 2) if VX == NN
         /// </summary>
-        public void _3XNN(ushort opcode)
+        public virtual void _3XNN(ushort opcode)
         {
             var x = (opcode & 0x0f00) >> 8;
             var nn = opcode & 0x00ff;
@@ -365,7 +365,7 @@ namespace ill8.Cpu
         /// <summary>
         /// Call subroutine at an address
         /// </summary>
-        public void _2NNN(ushort opcode)
+        public virtual void _2NNN(ushort opcode)
         {
             Cpu.Stack[Cpu.SP++] = Cpu.PC;
             Cpu.PC = (ushort)(opcode & 0x0fff);
@@ -374,19 +374,19 @@ namespace ill8.Cpu
         /// <summary>
         /// Jump to an address
         /// </summary>
-        public void _1NNN(ushort opcode)
+        public virtual void _1NNN(ushort opcode)
             => Cpu.PC = (ushort)(opcode & 0x0fff);
 
         /// <summary>
         /// Return from a subroutine
         /// </summary>
-        public void _00EE(ushort opcode)
+        public virtual void _00EE(ushort opcode)
             => Cpu.PC = Cpu.Stack[Cpu.SP--];
 
         /// <summary>
         /// RCA 1802 call
         /// </summary>
-        public void _0NNN(ushort opcode)
+        public virtual void _0NNN(ushort opcode)
         {
             throw new NotImplementedException();
         }
@@ -394,7 +394,7 @@ namespace ill8.Cpu
         /// <summary>
         /// Clear the display i.e. set all Vram pixels to off
         /// </summary>
-        public void _00E0(ushort opcode)
+        public virtual void _00E0(ushort opcode)
             => Cpu.Vram.SetAll(false); //TODO set draw flag
 
         public void Exec(ushort opcode)
