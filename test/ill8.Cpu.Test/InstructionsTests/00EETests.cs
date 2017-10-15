@@ -1,5 +1,4 @@
 ﻿using Moq;
-using System;
 using Xunit;
 
 namespace ill8.Cpu.Test.InstructionsTests

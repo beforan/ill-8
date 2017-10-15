@@ -1,5 +1,4 @@
-﻿using ill8.Cpu.Test.ClassData;
-using Moq;
+﻿using Moq;
 using Xunit;
 
 namespace ill8.Cpu.Test.InstructionsTests
