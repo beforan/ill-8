@@ -4,11 +4,11 @@ using Xunit;
 
 namespace ill8.Cpu.Test.InstructionsTests
 {
-    public class _3XNNTests
+    public class _4XNNTests
     {
         private readonly Instructions _sut;
 
-        public _3XNNTests()
+        public _4XNNTests()
         {
             var cpu = new Mock<ICpu>()
                 .SetupAllProperties()
@@ -23,10 +23,10 @@ namespace ill8.Cpu.Test.InstructionsTests
         public void IncreasePCBy2IfConditionMet(byte x)
         {
             var pc = _sut.Cpu.PC;
-            _sut.Cpu.V[x] = 0xab;
-            ushort opcode = (ushort)(0x30ab | x << 8);
+            _sut.Cpu.V[x] = 0xea;
+            ushort opcode = (ushort)(0x40ab | x << 8);
 
-            _sut._3XNN(opcode);
+            _sut._4XNN(opcode);
 
             Assert.Equal(pc+2, _sut.Cpu.PC);
         }
@@ -37,10 +37,10 @@ namespace ill8.Cpu.Test.InstructionsTests
         public void LeavePCAloneIfConditionNotMet(byte x)
         {
             var pc = _sut.Cpu.PC;
-            _sut.Cpu.V[x] = 0xea;
+            _sut.Cpu.V[x] = 0xab;
             ushort opcode = (ushort)(0x30ab | x << 8);
 
-            _sut._3XNN(opcode);
+            _sut._4XNN(opcode);
 
             Assert.Equal(pc, _sut.Cpu.PC);
         }
