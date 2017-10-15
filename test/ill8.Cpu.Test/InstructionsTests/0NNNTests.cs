@@ -6,7 +6,6 @@ namespace ill8.Cpu.Test.InstructionsTests
 {
     public class _0NNNTests
     {
-        //private readonly ICpu _cpu;
         private readonly Instructions _sut;
 
         public _0NNNTests()

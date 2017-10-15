@@ -6,7 +6,6 @@ namespace ill8.Cpu.Test.InstructionsTests
 {
     public class _00EETests
     {
-        //private readonly ICpu _cpu;
         private readonly Instructions _sut;
 
         public _00EETests()
@@ -19,7 +18,7 @@ namespace ill8.Cpu.Test.InstructionsTests
         }
 
         [Fact]
-        public void x00EEDecrementsSP()
+        public void DecrementSP()
         {
             var sp = ++_sut.Cpu.SP;
             _sut.Cpu.Stack[_sut.Cpu.SP] = 0x0400;
@@ -30,7 +29,7 @@ namespace ill8.Cpu.Test.InstructionsTests
         }
 
         [Fact]
-        public void x00EESetsPCToStackValue()
+        public void SetPCToStackValue()
         {
             ushort value = 0x0400;
             _sut.Cpu.Stack[_sut.Cpu.SP] = value;
